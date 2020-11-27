@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     final static int PAYMENT_REQUEST_CODE = 2000;
     EditText et_zibalId;
     Button btn_payment;
+    Button btn_backUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         handleIntent(getIntent());
 
         btn_payment = findViewById(R.id.payBtn);
+        btn_backUrl = findViewById(R.id.backUrlButton);
         et_zibalId = findViewById(R.id.zibalIdEditText);
         btn_payment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,8 +57,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void handleIntent(Intent intent) {
 
-        Log.e("mpos:handleIntent","mpos:handleIntent");
         et_zibalId = findViewById(R.id.zibalIdEditText);
+        btn_backUrl = findViewById(R.id.backUrlButton);
+
         String zibalId;
         Uri data = intent.getData();
 
@@ -67,6 +70,22 @@ public class MainActivity extends AppCompatActivity {
             if( data.getQueryParameter("zibalId")!= null) {
                 zibalId = data.getQueryParameter("zibalId");
                 et_zibalId.setText(zibalId);
+
+                //create back button if redirect url is in params
+                if(intent.getExtras().getString("backUrl") != null){
+                    String backUrl = intent.getExtras().getString("backUrl");
+                    btn_backUrl.setVisibility(View.VISIBLE);
+
+                    if (!backUrl.startsWith("http://") && !backUrl.startsWith("https://"))
+                        backUrl = "https://" + backUrl;
+
+                    String finalBackUrl = backUrl;
+                    btn_backUrl.setOnClickListener(view -> {
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(finalBackUrl));
+                        startActivity(browserIntent);
+                    });
+                }
+                //call payment
                 callPaymentIntent();
             }else{
                 finish();

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Zibal Webapp Sample</title>
+  <link rel="stylesheet" href="css/font.css" type="text/css" />
+  <style>
+    h4,
+    input,
+    button {
+      font-family: dana
+    }
+
+    body{
+      display: flex;
+      /* height: 80vh; */
+      justify-content: center;
+      align-items: center;
+      background-color: #2323CF;
+    }
+
+    div {
+      display: flex;
+      width: 80%;
+      flex-direction: column;
+      /* max-width: 450px; */
+    }
+
+    h4 {
+      text-align: right;
+      font-size: 3rem;
+      color: white;
+    }
+
+    input,button{
+      font-size: 3rem;
+    }
+
+    button{
+    }
+    
+    img{
+      width:550px;
+      height:550px;
+      display: flex;
+      align-self: center;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div>
+    <img src="logo.png"/>
+    <h4>شناسه زیبال</h4>
+    <input id="zibalId-input" type="text" name="zibalId"><br /><br />
+    <button>
+      <a id="pay-btn">پرداخت</a>
+    </button>
+  </div>
+  <script>
+    document.getElementById("pay-btn").onclick = () => {
+      const zibalId = document.getElementById('zibalId-input').value
+      document.getElementById("pay-btn").href = `intent://mpos/webapp?zibalId=${zibalId}#Intent;scheme=zibal;package=ir.zibal.webapp.android;S.backUrl=google.com;end`
+    }
+
+  </script>
+</body>
+
+</html>
